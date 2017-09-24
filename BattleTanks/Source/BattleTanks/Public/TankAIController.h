@@ -21,7 +21,7 @@ public:
 
 	virtual void BeginPlay() override;
 
-	void AimAt(APlayerController* player);
-	
+	virtual void Tick(float DeltaTime) override;
+
 	
 };
