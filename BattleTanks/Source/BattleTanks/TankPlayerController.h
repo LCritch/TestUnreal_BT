@@ -4,12 +4,11 @@
 
 
 #include "GameFramework/PlayerController.h"
-#include "Public/Tank.h"
 #include "TankPlayerController.generated.h"
 
-/**
- * 
- */
+
+class ATank;
+
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
