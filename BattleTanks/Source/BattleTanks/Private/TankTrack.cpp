@@ -6,7 +6,6 @@
 void UTankTrack::SetThrottle(float Throttle)
 {
 	auto Name = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s: Throttle: %f"), *Name, Throttle);
 
 	//TODO clamp throttle value so player can't go over -1/+1
 
