@@ -13,24 +13,15 @@ void UTankMovementComponent::Initalise(UTankTrack* leftTrackToSet, UTankTrack* r
 	rightTrack = rightTrackToSet;
 }
 
+#pragma region
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
 	if (!leftTrack || !rightTrack) { return; }
 
 	leftTrack->SetThrottle(Throw);
 	rightTrack->SetThrottle(Throw);
-
-	//TODO Prevent speed multiplying due to stick & trigger/ bumper input
-
 }
 
-void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
-{
-	//No need to call super as functionality is being overrided
-	auto tankName = GetOwner()->GetName();
-	auto moveVelocityString = MoveVelocity.ToString();
-	UE_LOG(LogTemp, Warning, TEXT("%s vectoring to %s"), *tankName, *moveVelocityString)
-}
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
 {
@@ -38,7 +29,19 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 
 	leftTrack->SetThrottle(Throw);
 	rightTrack->SetThrottle(-Throw);
-
-	//TODO Prevent speed multiplying due to stick & trigger/ bumper input
 }
+#pragma endregion intended L/R Throttle passed through to the relevant track
 
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	//No need to call super as functionality is being overrided
+	auto tankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	auto aiForwardIntention = MoveVelocity.GetSafeNormal();
+
+	auto forwardThrow = FVector::DotProduct(tankForward, aiForwardIntention);
+	IntendMoveForward(forwardThrow);
+
+	auto rightThrow = FVector::CrossProduct(tankForward,aiForwardIntention).Z;
+	IntendTurnRight(rightThrow);
+
+}

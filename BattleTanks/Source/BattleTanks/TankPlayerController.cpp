@@ -2,12 +2,21 @@
 
 #include "BattleTanks.h"
 #include "Public/Tank.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto controlledTank = GetControlledTank();
+	auto aimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (aimingComponent)
+	{
+		FoundAimingComponent(aimingComponent);
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning, TEXT("PC Can't find AimComp at BeginPlay"))
+	}
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -53,10 +62,6 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& outHitLocation)const
 		//line trace forward look direction, see what we hit
 		GetLookVectorHitLocation(lookDirection,outHitLocation);
 	}
-
-
-
-	//outHitLocation = FVector(1.0);
 	return true;
 }
 

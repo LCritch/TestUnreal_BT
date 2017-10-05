@@ -12,16 +12,9 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrelToSet)
+void UTankAimingComponent::Initalise(UTankBarrel* barrelToSet, UTankTurret* turretToSet)
 {
-	if (!barrelToSet) { return; }
 	Barrel = barrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* turretToSet)
-{
-	if (!turretToSet) { return; }
 	Turret = turretToSet;
 }
 
@@ -48,10 +41,6 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 		MoveBarrelTowards(aimDirection);
 		auto time = GetWorld()->GetTimeSeconds();
 	}
-	else
-	{
-
-	}
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector aimDirection)
@@ -60,6 +49,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector aimDirection)
 	* move barrel correctly per frame
 	* give max elevation speed and current frame time
 	*/
+	if (!Barrel || !Turret) { return; }
 
 	auto barrelRotator = Barrel->GetForwardVector().Rotation();
 	auto aimAsRotator = aimDirection.Rotation();
