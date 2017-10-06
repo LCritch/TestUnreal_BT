@@ -9,7 +9,7 @@
  * 
  */
 //Holds Tank Barrel Properties and Elevate Method 
-UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) , hideCategories = ("Collision"))
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()

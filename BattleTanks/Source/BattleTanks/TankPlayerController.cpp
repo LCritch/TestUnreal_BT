@@ -1,22 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTanks.h"
-#include "Public/Tank.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto aimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (aimingComponent)
-	{
-		FoundAimingComponent(aimingComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp,Warning, TEXT("PC Can't find AimComp at BeginPlay"))
-	}
+	auto aimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(aimingComponent)) { return; }
+	FoundAimingComponent(aimingComponent);
+	
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -25,15 +19,11 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-
-}
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	auto aimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(aimingComponent)) { return; }
 
 	FVector hitLocation; // out parameter
 
@@ -41,7 +31,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	{
 
 		//UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s") , *hitLocation.ToString());
-		GetControlledTank()->AimAt(hitLocation);
+		aimingComponent->AimAt(hitLocation);
 	}
 }
 

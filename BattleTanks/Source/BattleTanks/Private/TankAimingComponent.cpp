@@ -19,9 +19,9 @@ void UTankAimingComponent::Initalise(UTankBarrel* barrelToSet, UTankTurret* turr
 }
 
 
-void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
+void UTankAimingComponent::AimAt(FVector hitLocation)
 {
-	if (!Barrel) { return; }
+	if (!ensure(Barrel)) { return; }
 
 	FVector outLaunchVelocity;
 	FVector startLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -37,9 +37,7 @@ void UTankAimingComponent::AimAt(FVector hitLocation, float launchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace))
 	{
 		auto aimDirection = outLaunchVelocity.GetSafeNormal();
-		auto tankName = GetOwner()->GetName();
 		MoveBarrelTowards(aimDirection);
-		auto time = GetWorld()->GetTimeSeconds();
 	}
 }
 
@@ -49,7 +47,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector aimDirection)
 	* move barrel correctly per frame
 	* give max elevation speed and current frame time
 	*/
-	if (!Barrel || !Turret) { return; }
+	if (!ensure(Barrel) ||!ensure (Turret)) { return; }
 
 	auto barrelRotator = Barrel->GetForwardVector().Rotation();
 	auto aimAsRotator = aimDirection.Rotation();

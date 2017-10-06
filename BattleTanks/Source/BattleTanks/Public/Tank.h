@@ -7,10 +7,7 @@
 
 //Forward declarations of classes
 class UTankBarrel;
-class UTankTurret;
 class AProjectile;
-class UTankAimingComponent;
-class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -29,9 +26,6 @@ private:
 
 	UTankBarrel* Barrel = nullptr; //TODO Remove
 
-	
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float launchSpeed = 4000;//400 mps
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float reloadTimeInSeconds = 3;
@@ -39,16 +33,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	double lastFireTime = 0;
 
-protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* tankAimingComponent = nullptr;
-
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* tankMovementComponent = nullptr;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	float launchSpeed = 4000;//400 mps
 
 public:	
-	void AimAt(FVector hitLocation);
 
 	UFUNCTION(BlueprintCallable)
 	void FireBarrel();
