@@ -38,7 +38,7 @@ public:
 	EFiringState GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Firing")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 
 protected:
@@ -72,9 +72,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	double lastFireTime = 0;
-
+	
+	UPROPERTY(EditDefaultsOnly, Category= "Firing")
+	int32 roundsLeft = 30;
+	
 	FVector aimDirection;	
 
-	int roundsLeft = 30;
+	
 	
 };
