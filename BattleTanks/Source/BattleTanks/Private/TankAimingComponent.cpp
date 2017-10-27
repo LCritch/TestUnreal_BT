@@ -57,14 +57,14 @@ int32 UTankAimingComponent::GetRoundsLeft() const
 
 bool UTankAimingComponent::IsBarrelMoving()
 {
-	if (!ensure(Barrel)) { return false; }
+	if (!Barrel) { return false; }
 	auto barrelForward = Barrel->GetForwardVector();
 	return !barrelForward.Equals(aimDirection, 0.01);
 }
 
 void UTankAimingComponent::AimAt(FVector hitLocation)
 {
-	if (!ensure(Barrel)) { return; }
+	if (!Barrel) { return; }
 
 	FVector outLaunchVelocity;
 	FVector startLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -91,7 +91,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	* move barrel correctly per frame
 	* give max elevation speed and current frame time
 	*/
-	if (!ensure(Barrel) ||!ensure (Turret)) { return; }
+	if (!Barrel ||!Turret) { return; }
 
 	auto barrelRotator = Barrel->GetForwardVector().Rotation();
 	auto aimAsRotator = AimDirection.Rotation();
@@ -117,8 +117,8 @@ void UTankAimingComponent::FireBarrel()
 		if (firingState == EFiringState::Locked||firingState == EFiringState::Aiming)
 		{
 			//else spawn projectile
-			if (!ensure(Barrel)) { return; }
-			if (!ensure(projectileBlueprint)) { return; }
+			if (!Barrel) { return; }
+			if (!projectileBlueprint) { return; }
 			auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 				projectileBlueprint,
 				Barrel->GetSocketLocation(FName("Projectile")),

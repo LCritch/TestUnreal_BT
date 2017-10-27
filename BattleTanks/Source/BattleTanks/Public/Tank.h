@@ -6,6 +6,8 @@
 #include "Tank.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
@@ -15,13 +17,20 @@ private:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category  = "Setup")
+	int32 startingHealth = 100;
 
+	UPROPERTY(VisibleAnywhere, Category  = "Health")
+	int32 currentHealth;
 
 public:	
-
+	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent, class AController * EventInstigator,AActor * DamageCauser)override;
 	
+	UFUNCTION(BlueprintPure, Category= "Health")
+	float GetHealthPercent() const;
+
+	FTankDelegate OnDeath;
 	
 };

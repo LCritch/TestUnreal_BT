@@ -13,9 +13,28 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-
-// Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	currentHealth = startingHealth;
+}
+
+float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)
+{
+	int32 damagePoints = FPlatformMath::RoundToInt(DamageAmount);
+	int32 damageToApply = FMath::Clamp(damagePoints, 0, currentHealth);
+
+	currentHealth -= damageToApply;
+
+	if (currentHealth <= 0)
+	{
+		OnDeath.Broadcast();
+	}
+
+	return damageToApply;
+}
+
+float ATank::GetHealthPercent()const
+{
+	return (float)currentHealth / (float)startingHealth;
 }

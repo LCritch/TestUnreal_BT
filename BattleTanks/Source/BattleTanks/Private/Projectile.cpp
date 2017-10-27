@@ -53,6 +53,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	SetRootComponent(impactBlast);
 	collisionMesh->DestroyComponent();
 
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		projectileDamage,
+		GetActorLocation(),
+		explosionForce->Radius,
+		UDamageType::StaticClass(),
+		TArray<AActor*>()
+		);
+
 	FTimerHandle timerHandle;
 
 	GetWorld()->GetTimerManager().SetTimer(timerHandle, this, &AProjectile::OnTimerExpire, destroyDelay, false);

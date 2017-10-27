@@ -40,6 +40,11 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float lineTraceRange = 1000000;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")

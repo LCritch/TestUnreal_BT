@@ -5,8 +5,6 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-class ATank;
-
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {
@@ -19,6 +17,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
 
 protected:
 	//How close AI Tank can get to player
